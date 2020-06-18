@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Capítulo9 Diversidade filogenética | Introdução ao R com aplicações em biodiversidade e conservação</title>
+  <title>Capítulo7 Rarefação | Introdução ao R com aplicações em biodiversidade e conservação</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Capítulo9 Diversidade filogenética | Introdução ao R com aplicações em biodiversidade e conservação" />
+  <meta property="og:title" content="Capítulo7 Rarefação | Introdução ao R com aplicações em biodiversidade e conservação" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="paternogbc/livro-r" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Capítulo9 Diversidade filogenética | Introdução ao R com aplicações em biodiversidade e conservação" />
+  <meta name="twitter:title" content="Capítulo7 Rarefação | Introdução ao R com aplicações em biodiversidade e conservação" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="estimadores-de-riqueza.html"/>
-<link rel="next" href="diversidade-funcional.html"/>
+<link rel="prev" href="análises-multivariadas.html"/>
+<link rel="next" href="estimadores-de-riqueza.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -222,21 +222,70 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="diversidade-filogenética" class="section level1">
-<h1><span class="header-section-number">Capítulo9</span> Diversidade filogenética</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in nisi egestas, volutpat lectus non, interdum nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nulla quam, fermentum consequat maximus tristique, ultricies eget nunc. Donec efficitur tristique est hendrerit eleifend. Mauris elementum arcu vitae ultrices congue. Proin accumsan sollicitudin augue et iaculis. Quisque id tempor elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis iaculis purus nisi, non luctus metus vulputate quis. Maecenas felis urna, tristique eu maximus non, placerat aliquet felis. Ut elit enim, consequat in metus facilisis, fringilla dignissim neque. Nunc vehicula nulla et euismod interdum. Donec quis sapien non mi aliquet laoreet. Sed fermentum diam eu tempor hendrerit. Sed varius orci sit amet massa pellentesque, commodo commodo velit auctor. Integer finibus erat vitae sapien mattis, et auctor augue tincidunt.</p>
-<div id="sub-seção-1-2" class="section level2">
-<h2><span class="header-section-number">9.1</span> Sub-seção 1</h2>
-<p>Duis scelerisque porta massa id lacinia. Quisque sodales malesuada neque, at posuere justo. Sed nec diam vel sapien feugiat efficitur lobortis a massa. Vestibulum in finibus urna, in facilisis quam. Sed purus libero, lacinia id arcu in, volutpat tempor elit. Donec luctus tellus quis arcu porttitor aliquet. Duis pellentesque felis non dolor ullamcorper pharetra. Proin sit amet justo id metus tempus faucibus eget a dolor. Cras elementum massa et justo tempor placerat. Etiam ac metus interdum, efficitur magna sed, mattis velit.</p>
+<div id="rarefação" class="section level1">
+<h1><span class="header-section-number">Capítulo7</span> Rarefação</h1>
+<div id="backgorund-da-análise-1" class="section level2">
+<h2><span class="header-section-number">7.1</span> Backgorund da análise</h2>
+<p>Um das dificuldades na comparação da riqueza de espécies entre comunidades é decorrente da diferença no esforço amostral (e.g.diferença no número de indivíduos, discrepância na quantidade de unidades amostrais ou área amostrada) que inevitavelmente influenciará no número de espécies observadas (Gotelli &amp; Chao 2013). O método de rarefação nos permite comparar o número de espécies entre comunidades quando o tamanho da amostra ou a abundância de indivíduos não são iguais. A rarefação calcula o número esperado de espécies em cada comunidade tendo como base comparativa um valor em que todas as amostras atinjam um tamanho padrão, ou comparações baseadas na menor amostra ou com menos indivíduos (dentre todas amostras possíveis). O teste foi formulado considerando seguinte pergunta: Se considerarmos <em>n</em> indivíduos ou amostras (<em>n</em> &lt; N) para cada comunidade, quantas espécies registraríamos nas comunidades considerando o mesmo número de indivíduos ou amostras?</p>
+<blockquote>
+<p><span class="math display">\[E(S) = \sum 1 - \frac{{(N - N_1)}/{n}}{{N}/{n}}\]</span></p>
+</blockquote>
+<p>Onde:</p>
+<ul>
+<li><p>E(S) = Número de espécies esperado,</p></li>
+<li><p>N = Número total de indivíduos na amostra,</p></li>
+<li><p>Ni = Número de indivíduos da iésima espécie,</p></li>
+<li><p><em>n</em> = tamanho da amostra padronizada (menor amostra).</p></li>
+</ul>
+<p>Gotelli &amp; Collwel (2001) descrevem este método e discutem em detalhes as restrições sobre seu uso na ecologia: i) as amostras a serem comparados devem ser consistentes do ponto de vista taxonômico, ou seja, todos os indivíduos devem pertencer ao mesmo grupo taxonômico; ii) as comparações devem ser realizadas somente entre amostras com as mesmas técnicas de coleta; iii) os tipos de hábitat onde as amostras são obtidas devem ser semelhantes; e iv) é um método para estimar a riqueza de espécies em uma amostra menor – não pode ser usado para extrapolar e estimar riqueza. Contudo, é importante ressaltar que esta última restrição foi superada por Colwell et al. (2012) e Chao &amp; Jost (2012) que desenvolveram uma nova abordagem onde os dados podem ser interpolados (rarefeito) para amostras menores e extrapolados para amostras maiores.</p>
+<p>
+ 
+</p>
+<div id="exemplo-prático---rarefação" class="section level4">
+<h4><span class="header-section-number">7.1.0.1</span> Exemplo prático - Rarefação</h4>
+<div id="explicação-dos-dados" class="section level5">
+<h5><span class="header-section-number">7.1.0.1.1</span> Explicação dos dados</h5>
+<p>Neste exemplo usaremos os dados de espécies de morcegos amostradas em três fragmentos florestais (Breviglieri 2008): i) Mata Ciliar do Córrego Talhadinho com 12 hectares inserida em uma matriz de pastagem; ii) Mata Ciliar do Córrego dos Tenentes com 10 hectares inserida em uma matriz de cultivo de cana-de-açucar e pastagem; e iii) Fazenda Experimental de Pindorama com 128 hectares inserida uma matriz de cana-de-açúcar e pastagem.</p>
+<p><strong>Pergunta:</strong></p>
+<blockquote>
+<p>A riqueza de espécies de morcegos é maior na Fazenda Experimental do que nos fragmentos florestais menores?</p>
+</blockquote>
+<p><strong>Predições</strong></p>
+<blockquote>
+<p>O número de espécies será maior em fragmentos florestais maiores.</p>
+</blockquote>
+<p><strong>Variáveis</strong></p>
+<ul>
+<li>Variáveis preditoras
+<ul>
+<li>matriz ou dataframe com as abundâncias das espécies de morcegos registradas nos três fragmentos florestais</li>
+</ul></li>
+</ul>
+<p><strong>Checklist</strong></p>
+<ul>
+<li>Verificar se a sua matriz ou dataframe estão com as espécies nas linhas e os fragmentos florestais nas colunas</li>
+</ul>
 </div>
-<div id="sub-seção-2-2" class="section level2">
-<h2><span class="header-section-number">9.2</span> Sub-seção 2</h2>
-<p>Duis nec nisi sapien. Aenean a metus faucibus, malesuada ante et, semper magna. Sed vel fermentum mauris. Duis consectetur eget risus condimentum tempus. Cras tincidunt dui sed rutrum mollis. Sed tincidunt condimentum odio at luctus. Quisque sed augue urna. Aenean vel turpis dignissim, finibus elit commodo, sagittis massa. Sed lacinia leo massa, a varius sapien dictum in. Sed at pellentesque velit. Quisque pretium est a nisi fringilla, at bibendum enim sagittis. Phasellus a facilisis orci. Mauris auctor dolor a nunc cursus, in mattis lorem euismod. Donec sed convallis felis.</p>
 </div>
-<div id="sub-seção-3-2" class="section level2">
-<h2><span class="header-section-number">9.3</span> Sub-seção 3</h2>
-<p>Nam tortor lacus, volutpat ac aliquam tincidunt, posuere eu dui. Donec auctor ante convallis diam laoreet, eget luctus lorem iaculis. Proin feugiat ipsum nec velit commodo bibendum. Phasellus aliquet metus vehicula convallis aliquam. Quisque pretium ut augue non mollis. Nulla ut pulvinar nisl, at blandit sem. Nam vitae pellentesque risus. Fusce rhoncus eros eget velit volutpat rhoncus. Nam tempor varius fringilla. Aliquam venenatis interdum lorem at pellentesque. Nam a risus vitae dolor maximus ullamcorper nec et diam. Nunc condimentum arcu eu lacinia pellentesque. Etiam at nulla felis.</p>
-
+<div id="análise-1" class="section level3">
+<h3><span class="header-section-number">7.1.1</span> Análise</h3>
+<p>Calculo da rarefação</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="rarefação.html#cb2-1"></a><span class="kw">library</span>(ecodados)</span>
+<span id="cb2-2"><a href="rarefação.html#cb2-2"></a><span class="kw">library</span>(iNEXT)</span>
+<span id="cb2-3"><a href="rarefação.html#cb2-3"></a>dados_rarefacao &lt;-<span class="st"> </span>rarefacao_morcegos</span>
+<span id="cb2-4"><a href="rarefação.html#cb2-4"></a>resultados_rarefacao &lt;-<span class="st"> </span><span class="kw">iNEXT</span>(dados_rarefacao, <span class="dt">q =</span> <span class="dv">0</span>, <span class="dt">datatype =</span> <span class="st">&quot;abundance&quot;</span>, <span class="dt">endpoint =</span> <span class="dv">800</span>)</span>
+<span id="cb2-5"><a href="rarefação.html#cb2-5"></a></span>
+<span id="cb2-6"><a href="rarefação.html#cb2-6"></a><span class="co"># Visualizar os resultados </span></span>
+<span id="cb2-7"><a href="rarefação.html#cb2-7"></a><span class="kw">ggiNEXT</span>(resultados_rarefacao, <span class="dt">type =</span> <span class="dv">1</span>, <span class="dt">facet.var =</span> <span class="st">&quot;order&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in ggiNEXT.iNEXT(resultados_rarefacao, type = 1, facet.var = &quot;order&quot;):
+## invalid facet.var setting, the iNEXT object do not consist multiple orders.</code></pre>
+<p><img src="livro_r_ecologia_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><strong>Interpretação dos resultados</strong></p>
+<p>Neste exemplo, foram registrados 166 indivíduos na MC_Tenentes, 413 na MC_Talhadinho e 223 na FF_Experimental. Lembrando, você não pode comparar a riqueza de espécies observada diretamente: 15 espécies na MC_Tenentes, 17 espécies na MC_Talhadinho, e 13 espécies no FF_Experimental. A comparação da riqueza de espécies entre as comunidades deve ser feita com base na riqueza de espécies estimada que é calculada com base no número de indivíduos da comunidade com menor abundância (166 indivíduos). Olhando o gráfico é possível perceber que a riqueza de espécies de morcegos estimada não é diferente entre os três fragmentos florestais quando corrigimos o problema da abundância pela rarefação. A interpretação é feita com base no intervalo de confiança de 95%. As curvas serão diferentes quando os intervalos de confiança não se sobreporem (Chao et al. 2014). Percebam que está abordagem, além da interpolação (rarefação), também realiza extrapolações que podem ser usadas para estimar o número de espécies caso o esforço de coleta fosse maior. Este é o assunto do nosso próximo tópico.</p>
+<p>
+ 
+</p>
+</div>
 </div>
 </div>
             </section>
@@ -244,8 +293,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="estimadores-de-riqueza.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="diversidade-funcional.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="análises-multivariadas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="estimadores-de-riqueza.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -276,7 +325,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/paternogbc/livro-r/edit/master/07-filogenetica.Rmd",
+"link": "https://github.com/paternogbc/livro-r/edit/master/06-rarefa.Rmd",
 "text": "Edit"
 },
 "history": {
